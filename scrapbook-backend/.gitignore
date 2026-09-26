@@ -1,1 +1,38 @@
+Libraries (everyone runs npm install instead)
+node_modules/
 
+Secret keys: never commit these
+.env
+.env.*
+!.env.example
+
+Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+Mac and Windows junk files
+.DS_Store
+Thumbs.db
+
+Editor settings
+.vscode/
+.idea/
+
+Expo build and cache folders
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+App signing keys (if anyone builds for the stores)
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+
+Personal photos used for the demo data script
+backend/demo-photos/
