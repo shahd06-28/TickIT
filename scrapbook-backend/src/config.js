@@ -22,6 +22,9 @@ export const config = {
   // Recap generation will return a clear error if Gemini is missing.
   geminiApiKey: process.env.GEMINI_API_KEY || '',
   geminiModel: process.env.GEMINI_MODEL || 'gemini-flash-latest',
+    geminiModel: process.env.GEMINI_MODEL || 'gemini-flash-latest',
+  // Optional second model to try if the main one stays overloaded.
+  geminiFallbackModel: process.env.GEMINI_FALLBACK_MODEL || '',
 
   elevenLabsApiKey: process.env.ELEVENLABS_API_KEY || '',
   elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_ID || 'JBFqnCBsd6RMkjVDRZzb',

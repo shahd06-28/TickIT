@@ -94,8 +94,7 @@ export async function writeRecapStory(input) {
 
   let response;
   try {
-    response = await ai.models.generateContent({
-      model: config.geminiModel,
+    response = await generateWithRetry(ai, {
       contents: [{ role: 'user', parts }],
       config: {
         systemInstruction: INSTRUCTIONS,
@@ -106,10 +105,37 @@ export async function writeRecapStory(input) {
     });
   } catch (err) {
     console.error('Gemini request failed:', err);
-    throw new HttpError(502, 'Gemini could not write this recap. Try again in a moment.');
+    throw new HttpError(502, 'Gemini is busy right now and could not write this recap. Try again in a moment.');
   }
 
   return cleanStory(parseJson(response.text), photos.length);
+}
+
+// Errors that mean "Google is busy, try again", as opposed to a problem with our request.
+const RETRYABLE = new Set([429, 500, 503]);
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Calls Gemini, retrying when it's overloaded. Tries the main model up to 3 times
+ * (waiting 3s, then 6s), then the fallback model if GEMINI_FALLBACK_MODEL is set.
+ */
+async function generateWithRetry(ai, request) {
+  const models = [config.geminiModel, config.geminiFallbackModel].filter(Boolean);
+  let lastError;
+
+  for (const model of models) {
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        return await ai.models.generateContent({ ...request, model });
+      } catch (err) {
+        lastError = err;
+        if (!RETRYABLE.has(err?.status)) throw err;
+        console.warn(`Gemini (${model}) is busy, attempt ${attempt} of 3.`);
+        if (attempt < 3) await sleep(attempt * 3000);
+      }
+    }
+  }
+  throw lastError;
 }
 
 function parseJson(text) {

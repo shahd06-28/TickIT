@@ -4,13 +4,11 @@ import { networkInterfaces } from 'node:os';
 import { config } from './config.js';
 import { connectDb, closeDb } from './db.js';
 import { requireDevice, HttpError } from './validate.js';
-
-// Uncomment each import as we finish its file.
 import { yearsRouter } from './routes/years.js';
 import { daysRouter, monthsRouter } from './routes/days.js';
 import { photosRouter } from './routes/photos.js';
-// import { recapsRouter } from './routes/recaps.js';
-// import { shareRouter } from './routes/share.js';
+import { recapsRouter } from './routes/recaps.js';
+import { shareRouter } from './routes/share.js';
 
 const app = express();
 
@@ -23,14 +21,14 @@ app.get('/health', (_req, res) => {
 });
 
 // Public share pages: anyone with the link can open these, no device ID needed.
-// app.use('/r', shareRouter);
+app.use('/r', shareRouter);
 
 // Everything below needs the X-Device-Id header.
 app.use('/years', requireDevice, yearsRouter);
 app.use('/days', requireDevice, daysRouter);
 app.use('/months', requireDevice, monthsRouter);
 app.use('/photos', requireDevice, photosRouter);
-// app.use('/recaps', requireDevice, recapsRouter);
+app.use('/recaps', requireDevice, recapsRouter);
 
 // Any address that didn't match a route above.
 app.use((req, _res, next) => {
