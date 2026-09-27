@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppProvider } from "./src/context/AppContext";
 import AppNavigator from "./src/navigation/AppNavigator";
+import ScrapbookButton from "./src/components/ScrapbookButton";
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <AppProvider>
         <StatusBar style="dark" />
         <AppNavigator />
+        <ScrapbookButton />
       </AppProvider>
     </GestureHandlerRootView>
   );
