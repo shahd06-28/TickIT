@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppProvider } from "./src/context/AppContext";
 import AppNavigator from "./src/navigation/AppNavigator";
-import ScrapbookButton from "./src/components/ScrapbookButton.js";
+import ScrapbookButton from "./src/components/ScrapbookButton";
 
 export default function App() {
   return (
