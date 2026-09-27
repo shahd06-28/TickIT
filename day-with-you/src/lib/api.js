@@ -1,4 +1,4 @@
-export const SERVER_URL = 'http://192.168.10.86:3000';
+export const SERVER_URL = 'http://10.110.204.183:3000';
 const DEVICE_ID = 'tickit-demo-device';
 
 export function todayString(date = new Date()) {
